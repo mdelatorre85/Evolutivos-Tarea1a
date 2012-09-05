@@ -32,11 +32,11 @@ public class Generation {
 		int util = 0;
 		for (Strategy strategy : strategies) {
 			util = strategy.calculateFitness(prisonerOne, prisonerTwo);
+			totalFitness += util;
 			if (maxFitness < util) {
 				maxFitness = util;
 				bestStrategy = strategy;
 			}
-			totalFitness += util;
 		}
 		averageFitness = totalFitness / (double) strategies.size();
 	}
@@ -68,26 +68,36 @@ public class Generation {
 
 	private Strategy selectTournamentParent() {
 		int index = (int) Math.round(Math.random() * strategies.size());
-		if (index  == 30){
+		if (index == 30) {
 			index = 29;
 		}
-		
+
 		Strategy retorno = strategies.get(index);
-		
+
 		for (int i = 1; i < TOURNAMENTSIZE; i++) {
 			index = (int) Math.round(Math.random() * strategies.size());
-			if (index  == 30){
+			if (index == 30) {
 				index = 29;
 			}
-			
+
 			if (retorno.getFitness() < strategies.get(index).getFitness()) {
 				retorno = strategies.get(index);
 			}
 		}
 		return retorno;
 	}
-	
+
 	public Strategy getBestStrategy() {
 		return bestStrategy;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (Strategy strategy : strategies) {
+			sb.append(strategy.toString());
+			sb.append(",");
+		}
+		return sb.toString();
 	}
 }

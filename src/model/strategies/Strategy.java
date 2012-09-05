@@ -52,7 +52,7 @@ public class Strategy {
 	public int calculateFitness(Prisoner prisonerOne, Prisoner prisonerTwo) {
 		int acumulado = 0;
 		for (int i = 3; i < Prisoner.LENGHT; i++) {
-			if (prisonerOne.getGames()[i] == true 
+			if (prisonerOne.getGames()[i] == true
 					&& prisonerTwo.getGames()[i] == true) {
 				acumulado += 3;
 			} else if (prisonerOne.getGames()[i] == true
@@ -125,14 +125,15 @@ public class Strategy {
 		retorno.fitness = fitness;
 		return retorno;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		for( boolean game : nextGame){
-			builder.append(game == true ? "C":"D");
+		builder.append("[ ");
+		for (boolean game : nextGame) {
+			builder.append(game == true ? "c " : "t ");
 		}
-		
+		builder.append("]");
 		return builder.toString();
 	}
 }

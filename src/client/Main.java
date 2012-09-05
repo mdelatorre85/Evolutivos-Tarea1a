@@ -1,5 +1,6 @@
 package client;
 
+import model.CSVUtil;
 import model.Generation;
 import model.Prisoner;
 import model.strategies.Strategy;
@@ -12,7 +13,7 @@ public class Main {
 		Prisoner prisonerTwo = new Prisoner(prisonerOne);
 		boolean[] treePreviousGames = new boolean[6];
 		int index = 0;
-		
+
 		prisonerOne.getGames()[0] = true;
 		prisonerOne.getGames()[1] = true;
 		prisonerOne.getGames()[2] = true;
@@ -21,11 +22,18 @@ public class Main {
 			treePreviousGames[i * 2] = prisonerOne.getGames()[i];
 			treePreviousGames[i * 2 + 1] = prisonerTwo.getGames()[i];
 		}
-		
-		System.out.println("Valores de prisionero 1: "  + (prisonerOne.getGames()[0]?"C":"D") + (prisonerOne.getGames()[1]?"C":"D") + (prisonerOne.getGames()[2]?"C":"D"));
-		System.out.println("Valores de prisionero 2: "  + (prisonerTwo.getGames()[0]?"C":"D") + (prisonerTwo.getGames()[1]?"C":"D") + (prisonerTwo.getGames()[2]?"C":"D"));
 
-		for (int generationIndex = 0; generationIndex < 120; generationIndex++) {
+		System.out.println("Valores de prisionero 1: "
+				+ (prisonerOne.getGames()[0] ? "C" : "D")
+				+ (prisonerOne.getGames()[1] ? "C" : "D")
+				+ (prisonerOne.getGames()[2] ? "C" : "D"));
+		System.out.println("Valores de prisionero 2: "
+				+ (prisonerTwo.getGames()[0] ? "C" : "D")
+				+ (prisonerTwo.getGames()[1] ? "C" : "D")
+				+ (prisonerTwo.getGames()[2] ? "C" : "D"));
+
+		CSVUtil csvUtil = new CSVUtil("resultados.CSV");
+		for (int generationIndex = 0; generationIndex < 30; generationIndex++) {
 			for (Strategy strategy : generation.getStrategies()) {
 				for (int i = 3; i < Prisoner.LENGHT; i++) {
 					index = calculateIndex(treePreviousGames);
@@ -46,11 +54,14 @@ public class Main {
 			generation.calculateFitness(prisonerOne, prisonerTwo);
 			System.out.println("\n Generation: " + generationIndex);
 			System.out.println("Max fitness: " + generation.getMaxFitness());
-			System.out.println("Average fitness: " + generation.getAverageFitness());
-			System.out.println("Best strategy: " + generation.getBestStrategy().toString());
-			
+			System.out.println("Average fitness: "
+					+ generation.getAverageFitness());
+			System.out.println("Best strategy: "
+					+ generation.getBestStrategy().toString());
+			csvUtil.addGeneration(generation);
 			generation = generation.generateNextGeneration();
 		}
+		csvUtil.closeFile();
 	}
 
 	private static int calculateIndex(boolean[] treePreviousGames) {
