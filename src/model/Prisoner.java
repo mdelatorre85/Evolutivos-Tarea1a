@@ -1,5 +1,11 @@
 package model;
 
+/**
+ * Representación de un prisionero
+ * Contiene los valores que el prisionero tomó en sus juegos
+ * @author Cesar
+ *
+ */
 public class Prisoner {
 
 	public static final int LENGHT = 13;
@@ -22,10 +28,6 @@ public class Prisoner {
 		}
 	}
 
-	public Prisoner(boolean[] genotype) {
-		this.games = genotype;
-	}
-
 	/**
 	 * Genera las tiradas 
 	 * @param opponent
@@ -38,16 +40,27 @@ public class Prisoner {
 		games[2] = opponent.getGames()[1];
 	}
 
+	/**
+	 * Constructor por defecto
+	 */
 	public Prisoner() {
 		games = new boolean[LENGHT];
 	}
 
+	/**
+	 * Devuelve los juegos del prisionero
+	 * @return
+	 */
 	public boolean[] getGames() {
 		return games;
 	}
 
-	void setGames(boolean[] genotype) {
-		this.games = genotype;
+	/**
+	 * Establece los juego del prisionero
+	 * @param games
+	 */
+	void setGames(boolean[] games) {
+		this.games = games;
 	}
 
 	@Override

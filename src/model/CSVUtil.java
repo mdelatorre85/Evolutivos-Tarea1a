@@ -5,6 +5,12 @@ import java.io.IOException;
 
 import model.strategies.Strategy;
 
+/**
+ * Clase de utilidad para exportar los resultados 
+ * en un archivo CSV (separados por comas)
+ * @author Miguel de la Torre, César Salazar
+ *
+ */
 public class CSVUtil {
 
 	private FileWriter writer;

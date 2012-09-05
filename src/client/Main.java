@@ -5,6 +5,11 @@ import model.Generation;
 import model.Prisoner;
 import model.strategies.Strategy;
 
+/**
+ * Clase de ejecución del algoritmo
+ * @author Cesar
+ *
+ */
 public class Main {
 
 	public static void main(String[] args) {
@@ -13,10 +18,6 @@ public class Main {
 		Prisoner prisonerTwo = new Prisoner(prisonerOne);
 		boolean[] treePreviousGames = new boolean[6];
 		int index = 0;
-
-		prisonerOne.getGames()[0] = true;
-		prisonerOne.getGames()[1] = true;
-		prisonerOne.getGames()[2] = true;
 
 		for (int i = 0; i < 3; i++) {
 			treePreviousGames[i * 2] = prisonerOne.getGames()[i];
@@ -27,6 +28,7 @@ public class Main {
 				+ (prisonerOne.getGames()[0] ? "C" : "D")
 				+ (prisonerOne.getGames()[1] ? "C" : "D")
 				+ (prisonerOne.getGames()[2] ? "C" : "D"));
+		
 		System.out.println("Valores de prisionero 2: "
 				+ (prisonerTwo.getGames()[0] ? "C" : "D")
 				+ (prisonerTwo.getGames()[1] ? "C" : "D")
@@ -46,24 +48,30 @@ public class Main {
 					treePreviousGames[3] = prisonerTwo.getGames()[i - 1];
 					treePreviousGames[4] = prisonerOne.getGames()[i];
 					treePreviousGames[5] = prisonerTwo.getGames()[i];
-				}
-
-				// strategy.calculateFitness(prisonerOne, prisonerTwo);
+				}		
 			}
 
+			/* Se calcula el fitness de todas las estrategias de la generación y se
+			 * obtiene una referencia a la mejor */
 			generation.calculateFitness(prisonerOne, prisonerTwo);
 			System.out.println("\n Generation: " + generationIndex);
 			System.out.println("Max fitness: " + generation.getMaxFitness());
 			System.out.println("Average fitness: "
 					+ generation.getAverageFitness());
-			System.out.println("Best strategy: "
-					+ generation.getBestStrategy().toString());
+			System.out.println("Best strategy: " + generation.getBestStrategy().toString());
 			csvUtil.addGeneration(generation);
+			
+			/* Generamos una nueva población cruzando a los miebros de la población y mutando a los hijos */
 			generation = generation.generateNextGeneration();
 		}
 		csvUtil.closeFile();
 	}
 
+	/**
+	 * Calculamos el índice entre 0 y 63. 
+	 * @param treePreviousGames Valores de los últimos tres juegos
+	 * @return
+	 */
 	private static int calculateIndex(boolean[] treePreviousGames) {
 		int index = 0;
 

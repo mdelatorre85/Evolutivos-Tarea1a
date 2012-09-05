@@ -4,6 +4,13 @@ import java.util.Stack;
 
 import model.strategies.Strategy;
 
+/**
+ * Esta clase representa una generación (población) de estrategias.
+ * Contiene un stack de estrategias, un indicador de aptitud máxima,
+ *  aptitud promedio y una referencia a la mejor estrategia de la población. 
+ * @author Miguel de la Torre, César Salazar
+ *
+ */
 public class Generation {
 	private static final int TOURNAMENTSIZE = 4;
 	public static final int GENERATIONSIZE = 30;
@@ -14,8 +21,15 @@ public class Generation {
 	private double averageFitness = -1d;
 	private Strategy bestStrategy;
 
+	/**
+	 * Creamos una población de estrategias
+	 * @param randomize Si true, se inicializan las 
+	 * estrategias de manera aleatoria. 
+	 * Si false, únicamente se inicializa el stack
+	 * sin agregar estrategias 
+	 */
 	public Generation(boolean randomize) {
-		strategies = new Stack<>();
+		strategies = new Stack<Strategy>();
 		if (randomize) {
 			for (int i = 0; i < GENERATIONSIZE; i++) {
 				strategies.push(new Strategy(true));
@@ -23,10 +37,20 @@ public class Generation {
 		}
 	}
 
+	/**
+	 * Se devuelven las estrategias en la población
+	 * @return
+	 */
 	public Stack<Strategy> getStrategies() {
 		return strategies;
 	}
 
+	/**
+	 * Calculamos el fitness de la población usando los valores de las tiradas de los
+	 * prisioneros.
+	 * @param prisonerOne Referencia a las jugadas del prisionero 1 
+	 * @param prisonerTwo Referencia a las jugadas del prisionero 2
+	 */
 	public void calculateFitness(Prisoner prisonerOne, Prisoner prisonerTwo) {
 		totalFitness = 0;
 		int util = 0;
@@ -41,18 +65,34 @@ public class Generation {
 		averageFitness = totalFitness / (double) strategies.size();
 	}
 
+	/**
+	 * Devolvemos la aptitud promedio de la población
+	 * @return
+	 */
 	public double getAverageFitness() {
 		return averageFitness;
 	}
 
+	/**
+	 * Devolvemos la aptitud máxima de la población
+	 * @return
+	 */
 	public int getMaxFitness() {
 		return maxFitness;
 	}
 
+	/**
+	 * Devolvemos el acumulado de aptitud de la población
+	 * @return
+	 */
 	public int getTotalFitness() {
 		return totalFitness;
 	}
 
+	/**
+	 * Se crea una nueva generación de estrategias.
+	 * @return
+	 */
 	public Generation generateNextGeneration() {
 		Generation nextGeneration = new Generation(false);
 		for (int i = 0; i < strategies.size() / 2; i++) {
@@ -66,6 +106,11 @@ public class Generation {
 		return nextGeneration;
 	}
 
+	/**
+	 * Seleccionamos un padre de la población actual.
+	 * Se eligen cuatro elementos aleatorios y se devuelve el mejor de ellos.
+	 * @return
+	 */
 	private Strategy selectTournamentParent() {
 		int index = (int) Math.round(Math.random() * strategies.size());
 		if (index == 30) {
@@ -87,6 +132,10 @@ public class Generation {
 		return retorno;
 	}
 
+	/**
+	 * Devolvemos la mejor estrategia de la población
+	 * @return
+	 */
 	public Strategy getBestStrategy() {
 		return bestStrategy;
 	}
